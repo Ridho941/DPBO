@@ -3,6 +3,9 @@ package Ridho.DPBO;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Harsya.Pembayaran;
+import Harsya.PembayaranKartuKredit;
+import Harsya.PembayaranTransferBank;
 import Ken.Apartemen;
 import Ken.ApartemenBulanan;
 import Ken.ApartemenHarian;
@@ -19,6 +22,7 @@ public class Main
     	Scanner input = new Scanner(System.in);
     	ArrayList<Kost> listKost = new ArrayList<Kost>();
         ArrayList<Apartemen> listApartemen = new ArrayList<Apartemen>();
+        ArrayList<Pembayaran> listPembayaran = new ArrayList<Pembayaran>();
     	int menu;
     	
     	do {
@@ -144,6 +148,72 @@ public class Main
                         }
                     }
                 	break;
+                	
+                case 5:
+                    System.out.println("\n===== Metode Pembayaran =====");
+                    System.out.println("1. Transfer Bank");
+                    System.out.println("2. Kartu Kredit");
+                    System.out.print("Pilihan Anda (1/2): ");
+                    int pilihan = input.nextInt();
+                    input.nextLine();
+
+                    if (pilihan == 1) {
+                        System.out.print("Masukkan nama bank: ");
+                        String bank = input.nextLine();
+                        System.out.print("Masukkan nomor rekening: ");
+                        int rekening = input.nextInt();
+                        input.nextLine();
+
+                        PembayaranTransferBank transfer = new PembayaranTransferBank(bank, rekening);
+                        if (transfer.verifikasiTransfer()) {
+                            transfer.prosesPembayaran();
+                            listPembayaran.add(transfer);
+                            System.out.println("Pembayaran berhasil diproses.");
+                            System.out.println("Status: " + transfer.cekStatus());
+                        } else {
+                            System.out.println("Verifikasi transfer gagal. Data tidak valid.");
+                        }
+
+                    } else if (pilihan == 2) {
+                        System.out.print("Masukkan nomor kartu: ");
+                        String kartu = input.nextLine();
+                        System.out.print("Masukkan nama pemegang kartu: ");
+                        String namaKartu = input.nextLine();
+                        System.out.print("Masukkan tanggal kadaluwarsa (contoh: 12/2026): ");
+                        String tanggal = input.nextLine();
+                        System.out.print("Masukkan PIN: ");
+                        int pin = input.nextInt();
+                        input.nextLine();
+
+                        PembayaranKartuKredit kredit = new PembayaranKartuKredit(kartu, namaKartu, tanggal, pin);
+                        if (kredit.verifikasiKartu()) {
+                            kredit.prosesPembayaran();
+                            listPembayaran.add(kredit);
+                            System.out.println("Pembayaran berhasil diproses.");
+                            System.out.println("Status: " + kredit.cekStatus());
+                        } else {
+                            System.out.println("Verifikasi kartu gagal. Data tidak valid.");
+                        }
+                    } else {
+                        System.out.println("Pilihan tidak valid.");
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("\n===== Riwayat Pembayaran =====");
+                    if (listPembayaran.isEmpty()) {
+                        System.out.println("Belum ada pembayaran.");
+                    } else {
+                        int i = 1;
+                        for (Pembayaran p : listPembayaran) {
+                            System.out.println("Pembayaran #" + i);
+                            System.out.println("Status: " + p.cekStatus());
+                            System.out.println("Jenis: " + p.getClass().getSimpleName());
+                            System.out.println("----------------------");
+                            i++;
+                        }
+                    }
+                    break;
                     
                 case 9:
                 	System.out.println("Keluar");
@@ -162,7 +232,9 @@ public class Main
         System.out.println("2. Tampilkan Semua Kost");
         System.out.println("3. Tambah Apartemen");
         System.out.println("4. Tampilkan Semua Apartemen");
+        System.out.println("5. Lakukan Pembayaran");
+        System.out.println("6. Lihat Riwayat Pembayaran");
         System.out.println("9. Keluar");
-        System.out.print("Pilih menu: ");
+        System.out.print("Pilih menu: ");
 	}
 }
