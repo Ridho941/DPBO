@@ -10,6 +10,7 @@ import Ken.Apartemen;
 import Ken.ApartemenBulanan;
 import Ken.ApartemenHarian;
 import Ken.ApartemenTahunan;
+import Ken.Booking;
 
 /**
  * Hello world!
@@ -23,6 +24,8 @@ public class Main
     	ArrayList<Kost> listKost = new ArrayList<Kost>();
         ArrayList<Apartemen> listApartemen = new ArrayList<Apartemen>();
         ArrayList<Pembayaran> listPembayaran = new ArrayList<Pembayaran>();
+        ArrayList<Booking> listBooking = new ArrayList<Booking>();
+
     	int menu;
     	
     	do {
@@ -214,6 +217,67 @@ public class Main
                         }
                     }
                     break;
+               
+                case 7:
+                	 System.out.println("\n===== Booking Kost/Apartemen =====");
+                	    System.out.println("1. Booking Kost");
+                	    System.out.println("2. Booking Apartemen");
+                	    System.out.print("Pilihan Anda (1/2): ");
+                	    int pilihBooking = input.nextInt();
+                	    input.nextLine();
+
+                	    if (pilihBooking == 1) {
+                	        if (listKost.isEmpty()) {
+                	            System.out.println("Belum ada data Kost.");
+                	            break;
+                	        }
+                	        for (int i = 0; i < listKost.size(); i++) {
+                	            System.out.print((i+1) + ". ");
+                	            listKost.get(i).getDetails();
+                	        }
+                	        System.out.print("Pilih Kost yang ingin dibooking (nomor): ");
+                	        int pilihKost = input.nextInt();
+                	        input.nextLine();
+                	        if (pilihKost > 0 && pilihKost <= listKost.size()) {
+                	            Kost k = listKost.get(pilihKost - 1);
+                	            if (!k.isAvailability()) {
+                	                System.out.println("Kost tidak tersedia.");
+                	            } else {
+                	                Booking b = new Booking(k);
+                	                listBooking.add(b);
+                	                System.out.println("Kost berhasil dibooking.");
+                	            }
+                	        } else {
+                	            System.out.println("Pilihan tidak valid.");
+                	        }
+                	    } else if (pilihBooking == 2) {
+                	        if (listApartemen.isEmpty()) {
+                	            System.out.println("Belum ada data Apartemen.");
+                	            break;
+                	        }
+                	        for (int i = 0; i < listApartemen.size(); i++) {
+                	            System.out.print((i+1) + ". ");
+                	            listApartemen.get(i).getDetails();
+                	        }
+                	        System.out.print("Pilih Apartemen yang ingin dibooking (nomor): ");
+                	        int pilihAp = input.nextInt();
+                	        input.nextLine();
+                	        if (pilihAp > 0 && pilihAp <= listApartemen.size()) {
+                	            Apartemen a = listApartemen.get(pilihAp - 1);
+                	            if (!a.isAvailability()) {
+                	                System.out.println("Apartemen tidak tersedia.");
+                	            } else {
+                	                Booking b = new Booking(a);
+                	                listBooking.add(b);
+                	                System.out.println("Apartemen berhasil dibooking.");
+                	            }
+                	        } else {
+                	            System.out.println("Pilihan tidak valid.");
+                	        }
+                	    } else {
+                	        System.out.println("Pilihan tidak valid.");
+                	    }
+                	break;
                     
                 case 9:
                 	System.out.println("Keluar");
@@ -234,6 +298,7 @@ public class Main
         System.out.println("4. Tampilkan Semua Apartemen");
         System.out.println("5. Lakukan Pembayaran");
         System.out.println("6. Lihat Riwayat Pembayaran");
+        System.out.println("7. Booking");
         System.out.println("9. Keluar");
         System.out.print("Pilih menu: ");
 	}
