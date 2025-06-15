@@ -8,5 +8,9 @@ public abstract class User {
 		this.role = role;
 	}
 	
+	public String getRole() {
+		return role;
+	}
+	
 	public abstract void tampilkanMenu();
 }
